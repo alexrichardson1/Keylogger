@@ -11,6 +11,8 @@ def on_release(key):
         key = " "
     elif key == Key.enter:
         key = "[ENTER]\n"
+    elif key == Key.backspace:
+        key = "[BACKSPACE]"
     elif key == Key.esc:
         # stop listener
         return False
