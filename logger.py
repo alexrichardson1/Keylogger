@@ -4,7 +4,11 @@ keyboard = Controller()
 # write for easy debugging
 f = open("log.txt", "w")
 
-ks = {Key.space: " ", Key.enter: "[ENTER]\n", Key.backspace: "[BACKSPACE]"}
+ks = {
+    Key.space: " ",
+    Key.enter: "[ENTER]\n",
+    Key.tab: "[TAB]",
+    Key.backspace: "[BACKSPACE]"}
 
 
 def on_release(key):
