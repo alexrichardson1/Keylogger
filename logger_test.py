@@ -24,7 +24,7 @@ class TestLogger(unittest.TestCase):
     def test_on_release_special_key(self):
         log = ""
         logger = self.logger
-        ks = logger.ks
+        ks = logger.special_keys
         for special_key in ks.keys():
             log += ks[special_key]
             logger.on_release(special_key)
