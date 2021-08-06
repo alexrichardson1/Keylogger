@@ -1,0 +1,4 @@
+autopep8==1.5.4
+cryptography==2.8
+pynput==1.7.3
+pyscreenshot==3.0
