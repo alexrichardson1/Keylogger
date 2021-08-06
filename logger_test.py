@@ -22,10 +22,13 @@ class TestLogger(unittest.TestCase):
         self.assertEqual(self.logger.log, "a")
 
     def test_on_release_special_key(self):
-        self.logger.on_release(Key.space)
-        self.assertEqual(self.logger.log, " ")
-        self.logger.on_release(Key.enter)
-        self.assertEqual(self.logger.log, " [ENTER]\n")
+        log = ""
+        logger = self.logger
+        ks = logger.ks
+        for special_key in ks.keys():
+            log += ks[special_key]
+            logger.on_release(special_key)
+            self.assertEqual(logger.log, log)
 
     def test_encrypt_log(self):
         self.logger.on_release("a")
